@@ -22,6 +22,13 @@ const Scene = () => {
   const [character, setChar] = useState<THREE.Object3D | null>(null);
   useEffect(() => {
     if (canvasDiv.current) {
+      // Clean up any existing canvas from StrictMode double-mount
+      const existingCanvas = canvasDiv.current.querySelector("canvas");
+      if (existingCanvas) {
+        canvasDiv.current.removeChild(existingCanvas);
+      }
+      sceneRef.current = new THREE.Scene();
+
       let rect = canvasDiv.current.getBoundingClientRect();
       let container = { width: rect.width, height: rect.height };
       const aspect = container.width / container.height;
@@ -69,9 +76,10 @@ const Scene = () => {
               animations.startIntro();
             }, 2500);
           });
-          window.addEventListener("resize", () =>
-            handleResize(renderer, camera, canvasDiv, character)
-          );
+          const resizeHandler = () =>
+            handleResize(renderer, camera, canvasDiv, character);
+          window.addEventListener("resize", resizeHandler);
+          (window as any).__charResizeHandler = resizeHandler;
         }
       });
 
@@ -82,12 +90,14 @@ const Scene = () => {
         handleMouseMove(event, (x, y) => (mouse = { x, y }));
       };
       let debounce: number | undefined;
+      const touchMoveHandlers: { element: HTMLElement; handler: (e: TouchEvent) => void }[] = [];
       const onTouchStart = (event: TouchEvent) => {
         const element = event.target as HTMLElement;
         debounce = setTimeout(() => {
-          element?.addEventListener("touchmove", (e: TouchEvent) =>
-            handleTouchMove(e, (x, y) => (mouse = { x, y }))
-          );
+          const handler = (e: TouchEvent) =>
+            handleTouchMove(e, (x, y) => (mouse = { x, y }));
+          element?.addEventListener("touchmove", handler);
+          touchMoveHandlers.push({ element, handler });
         }, 200);
       };
 
@@ -98,16 +108,15 @@ const Scene = () => {
         });
       };
 
-      document.addEventListener("mousemove", (event) => {
-        onMouseMove(event);
-      });
+      document.addEventListener("mousemove", onMouseMove);
       const landingDiv = document.getElementById("landingDiv");
       if (landingDiv) {
         landingDiv.addEventListener("touchstart", onTouchStart);
         landingDiv.addEventListener("touchend", onTouchEnd);
       }
+      let animFrameId: number;
       const animate = () => {
-        requestAnimationFrame(animate);
+        animFrameId = requestAnimationFrame(animate);
         if (headBone) {
           handleHeadRotation(
             headBone,
@@ -127,17 +136,23 @@ const Scene = () => {
       };
       animate();
       return () => {
+        cancelAnimationFrame(animFrameId);
         clearTimeout(debounce);
         scene.clear();
         renderer.dispose();
-        window.removeEventListener("resize", () =>
-          handleResize(renderer, camera, canvasDiv, character!)
-        );
+        const storedResizeHandler = (window as any).__charResizeHandler;
+        if (storedResizeHandler) {
+          window.removeEventListener("resize", storedResizeHandler);
+          delete (window as any).__charResizeHandler;
+        }
+        touchMoveHandlers.forEach(({ element, handler }) => {
+          element.removeEventListener("touchmove", handler);
+        });
         if (canvasDiv.current) {
           canvasDiv.current.removeChild(renderer.domElement);
         }
+        document.removeEventListener("mousemove", onMouseMove);
         if (landingDiv) {
-          document.removeEventListener("mousemove", onMouseMove);
           landingDiv.removeEventListener("touchstart", onTouchStart);
           landingDiv.removeEventListener("touchend", onTouchEnd);
         }

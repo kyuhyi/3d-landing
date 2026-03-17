@@ -74,19 +74,33 @@ a.contact-social {
 @media only screen and (max-width: 900px) {
   .contact-flex {
     flex-direction: column;
-    gap: 40px;
+    gap: 30px;
   }
   .contact-flex p {
     margin-bottom: 0px;
   }
   .contact-flex h4 {
-    margin-top: 20px;
+    margin-top: 15px;
   }
   .contact-section {
     margin-top: 50px;
     padding-bottom: 50px;
   }
+  .contact-section h3 {
+    font-size: 32px;
+  }
   .contact-container {
     width: calc(100% - 25px);
+  }
+  a.contact-social {
+    font-size: 18px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .contact-section h3 {
+    font-size: 26px;
+  }
+  .contact-box h2 {
+    font-size: 16px;
   }
 }

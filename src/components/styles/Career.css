@@ -191,26 +191,46 @@
   }
   .career-section h2 {
     width: 100%;
-    font-size: 45px;
-    line-height: 45px;
+    font-size: 36px;
+    line-height: 38px;
     margin-top: 0px;
+    margin-bottom: 50px;
   }
   .career-info-in {
     gap: 0px;
   }
   .career-info h3 {
-    font-size: 33px;
+    font-size: 28px;
+  }
+  .career-info h4 {
+    font-size: 18px;
+    line-height: 20px;
+    width: auto;
+  }
+  .career-info h5 {
+    font-size: 14px;
+  }
+  .career-info-box p {
+    font-size: 13px;
   }
   .career-info-in,
   .career-info-box p {
     padding-left: 5%;
   }
+  .career-info-box {
+    margin-bottom: 40px;
+  }
   .career-section {
     padding-top: 90px;
     margin-top: -70px;
-
     align-items: start;
     place-items: inherit;
     justify-content: left;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .career-section h2 {
+    font-size: 28px;
+    line-height: 32px;
   }
 }

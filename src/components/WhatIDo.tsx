@@ -8,19 +8,20 @@ const WhatIDo = () => {
     containerRef.current[index] = el;
   };
   useEffect(() => {
+    const clickHandlers: { el: HTMLDivElement; handler: () => void }[] = [];
     if (ScrollTrigger.isTouch) {
       containerRef.current.forEach((container) => {
         if (container) {
           container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
+          const handler = () => handleClick(container);
+          container.addEventListener("click", handler);
+          clickHandlers.push({ el: container, handler });
         }
       });
     }
     return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
+      clickHandlers.forEach(({ el, handler }) => {
+        el.removeEventListener("click", handler);
       });
     };
   }, []);
@@ -28,9 +29,9 @@ const WhatIDo = () => {
     <div className="whatIDO">
       <div className="what-box">
         <h2 className="title">
-          W<span className="hat-h2">HAT</span>
+          커<span className="hat-h2">리</span>
           <div>
-            I<span className="do-h2"> DO</span>
+            큘<span className="do-h2">럼</span>
           </div>
         </h2>
       </div>
@@ -87,24 +88,22 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>DEVELOP</h3>
-              <h4>Description</h4>
+              <h3>AI 코딩</h3>
+              <h4>AI와 대화하며 코딩하기</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae.
+                Claude, GPT, Gemini 등 최신 AI 도구를 활용해
+                원하는 기능을 자연어로 설명하고 코드를 생성합니다.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>배우는 도구들</h5>
               <div className="what-content-flex">
-                <div className="what-tags">JavaScript</div>
-                <div className="what-tags">TypeScript</div>
-                <div className="what-tags">Three.js</div>
-                <div className="what-tags">React</div>
-                <div className="what-tags">Css</div>
-                <div className="what-tags">Node.js</div>
-                <div className="what-tags">Next.js</div>
-                <div className="what-tags">Express.js</div>
-                <div className="what-tags">PHP</div>
-                <div className="what-tags">MySql</div>
+                <div className="what-tags">Claude</div>
+                <div className="what-tags">Cursor</div>
+                <div className="what-tags">v0.dev</div>
+                <div className="what-tags">Bolt.new</div>
+                <div className="what-tags">Lovable</div>
+                <div className="what-tags">Replit</div>
+                <div className="what-tags">GitHub Copilot</div>
+                <div className="what-tags">ChatGPT</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -128,22 +127,22 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>DESIGN</h3>
-              <h4>Description</h4>
+              <h3>프로젝트</h3>
+              <h4>실전 프로젝트 완성</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae
+                랜딩페이지, SaaS, 자동화 도구 등 실제로 동작하는
+                프로젝트를 직접 기획하고 완성합니다.
               </p>
-              <h5>Skillset & tools</h5>
+              <h5>만들 수 있는 것들</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Blender</div>
-                <div className="what-tags">Zbrush</div>
-                <div className="what-tags">UI Design</div>
-                <div className="what-tags">Motion</div>
-                <div className="what-tags">Rigging</div>
-                <div className="what-tags">3D Animation</div>
-                <div className="what-tags">Character Design</div>
-                <div className="what-tags">Modelling</div>
+                <div className="what-tags">랜딩페이지</div>
+                <div className="what-tags">SaaS 서비스</div>
+                <div className="what-tags">자동화 봇</div>
+                <div className="what-tags">Chrome 확장</div>
+                <div className="what-tags">API 서버</div>
+                <div className="what-tags">대시보드</div>
+                <div className="what-tags">AI 챗봇</div>
+                <div className="what-tags">포트폴리오</div>
               </div>
               <div className="what-arrow"></div>
             </div>

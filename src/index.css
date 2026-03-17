@@ -118,6 +118,17 @@ body {
 }
 @media screen and (max-width: 900px) {
   .techstack h2 {
-    font-size: 40px;
+    font-size: 32px;
+    top: 60px;
+  }
+  .techstack {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+@media screen and (max-width: 500px) {
+  .techstack h2 {
+    font-size: 24px;
+    top: 40px;
   }
 }

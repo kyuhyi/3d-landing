@@ -135,20 +135,26 @@ const TechStack = () => {
         .getBoundingClientRect().top;
       setIsActive(scrollY > threshold);
     };
+    const clickHandlers: { el: HTMLAnchorElement; handler: () => void }[] = [];
     document.querySelectorAll(".header a").forEach((elem) => {
       const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
+      const handler = () => {
         const interval = setInterval(() => {
           handleScroll();
         }, 10);
         setTimeout(() => {
           clearInterval(interval);
         }, 1000);
-      });
+      };
+      element.addEventListener("click", handler);
+      clickHandlers.push({ el: element, handler });
     });
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      clickHandlers.forEach(({ el, handler }) => {
+        el.removeEventListener("click", handler);
+      });
     };
   }, []);
   const materials = useMemo(() => {
@@ -168,7 +174,7 @@ const TechStack = () => {
 
   return (
     <div className="techstack">
-      <h2> My Techstack</h2>
+      <h2>배우는 기술들</h2>
 
       <Canvas
         shadows

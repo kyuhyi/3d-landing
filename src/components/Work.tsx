@@ -1,13 +1,16 @@
+import { useEffect } from "react";
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
-  useGSAP(() => {
+  useEffect(() => {
+  // 모바일에서는 가로 스크롤 비활성화 (세로 스택)
+  if (window.innerWidth <= 900) return;
+
   let translateX: number = 0;
 
   function setTranslateX() {
@@ -28,7 +31,7 @@ const Work = () => {
     scrollTrigger: {
       trigger: ".work-section",
       start: "top top",
-      end: `+=${translateX}`, // Use actual scroll width
+      end: `+=${translateX}`,
       scrub: true,
       pin: true,
       id: "work",
@@ -40,7 +43,6 @@ const Work = () => {
     ease: "none",
   });
 
-  // Clean up (optional, good practice)
   return () => {
     timeline.kill();
     ScrollTrigger.getById("work")?.kill();
@@ -50,24 +52,31 @@ const Work = () => {
     <div className="work-section" id="work">
       <div className="work-container section-container">
         <h2>
-          My <span>Work</span>
+          수강생 <span>프로젝트</span>
         </h2>
         <div className="work-flex">
-          {[...Array(6)].map((_value, index) => (
+          {[
+            { name: "AI 챗봇 서비스", category: "SaaS", tools: "Claude, Next.js, Vercel", image: "/images/project-01.jpg" },
+            { name: "자동화 대시보드", category: "Dashboard", tools: "React, n8n, Supabase", image: "/images/project-02.jpg" },
+            { name: "포트폴리오 사이트", category: "Landing", tools: "Cursor, Three.js, GSAP", image: "/images/project-03.jpg" },
+            { name: "크롬 확장 프로그램", category: "Extension", tools: "Bolt.new, Chrome API", image: "/images/project-04.jpg" },
+            { name: "SNS 자동화 봇", category: "Automation", tools: "Node.js, Telegram API", image: "/images/project-05.jpg" },
+            { name: "이커머스 랜딩", category: "E-commerce", tools: "v0.dev, Stripe, Next.js", image: "/images/project-06.jpg" },
+          ].map((project, index) => (
             <div className="work-box" key={index}>
               <div className="work-info">
                 <div className="work-title">
                   <h3>0{index + 1}</h3>
 
                   <div>
-                    <h4>Project Name</h4>
-                    <p>Category</p>
+                    <h4>{project.name}</h4>
+                    <p>{project.category}</p>
                   </div>
                 </div>
-                <h4>Tools and features</h4>
-                <p>Javascript, TypeScript, React, Threejs</p>
+                <h4>사용 도구</h4>
+                <p>{project.tools}</p>
               </div>
-              <WorkImage image="/images/placeholder.webp" alt="" />
+              <WorkImage image={project.image} alt={project.name} />
             </div>
           ))}
         </div>

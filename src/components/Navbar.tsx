@@ -1,56 +1,47 @@
 import { useEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap-trial/ScrollSmoother";
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother: ScrollSmoother;
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Navbar = () => {
   useEffect(() => {
-    smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 1.7,
-      speed: 1.7,
-      effects: true,
-      autoResize: true,
-      ignoreMobileResize: true,
-    });
-
-    smoother.scrollTop(0);
-    smoother.paused(true);
-
-    let links = document.querySelectorAll(".header ul a");
+    const links = document.querySelectorAll(".header ul a");
+    const handlers: { el: HTMLAnchorElement; handler: (e: Event) => void }[] = [];
     links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
+      const element = elem as HTMLAnchorElement;
+      const handler = (e: Event) => {
+        e.preventDefault();
+        const el = e.currentTarget as HTMLAnchorElement;
+        const section = el.getAttribute("data-href");
+        if (section) {
+          const target = document.querySelector(section);
+          if (target) {
+            gsap.to(window, {
+              duration: 1,
+              scrollTo: { y: target, offsetY: 0 },
+              ease: "power2.inOut"
+            });
+          }
         }
+      };
+      element.addEventListener("click", handler);
+      handlers.push({ el: element, handler });
+    });
+    return () => {
+      handlers.forEach(({ el, handler }) => {
+        el.removeEventListener("click", handler);
       });
-    });
-    window.addEventListener("resize", () => {
-      ScrollSmoother.refresh(true);
-    });
+    };
   }, []);
   return (
     <>
       <div className="header">
         <a href="/#" className="navbar-title" data-cursor="disable">
-          Logo
-        </a>
-        <a
-          href="mailto:example@mail.com"
-          className="navbar-connect"
-          data-cursor="disable"
-        >
-          example@mail.com
+          <img src="/images/bsd-white.png" alt="BSD Class" style={{height: '36px'}} />
         </a>
         <ul>
           <li>
@@ -60,12 +51,12 @@ const Navbar = () => {
           </li>
           <li>
             <a data-href="#work" href="#work">
-              <HoverLinks text="WORK" />
+              <HoverLinks text="PROJECTS" />
             </a>
           </li>
           <li>
             <a data-href="#contact" href="#contact">
-              <HoverLinks text="CONTACT" />
+              <HoverLinks text="APPLY" />
             </a>
           </li>
         </ul>

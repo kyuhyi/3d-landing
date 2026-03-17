@@ -345,6 +345,18 @@
     font-size: 100px;
   }
 }
+@media only screen and (max-width: 600px) {
+  .loading-marquee {
+    font-size: 35px;
+  }
+  .loading-marquee span {
+    padding: 0px 25px;
+  }
+  .loading-marquee span::before {
+    width: 12px;
+    height: 12px;
+  }
+}
 @media only screen and (min-width: 500px) {
   .loading-header {
     padding: 20px 0px;

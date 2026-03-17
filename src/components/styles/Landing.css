@@ -98,8 +98,7 @@
   opacity: 0;
 }
 .character-model {
-  height: 80%;
-  height: 80vh;
+  height: 65vh;
   position: absolute;
   max-width: 1920px;
   max-height: 1080px;
@@ -107,7 +106,7 @@
   width: 100%;
   left: 50%;
   z-index: 0;
-  bottom: 50px;
+  bottom: 30px;
   pointer-events: inherit;
 }
 .character-model::after {
@@ -187,7 +186,7 @@
   position: absolute;
   right: 50%;
   transform: translateX(50%);
-  bottom: 40px;
+  bottom: 20px;
   top: inherit;
   z-index: 9;
 }
@@ -215,6 +214,7 @@
 .landing-h2-info-1 {
   position: absolute;
   top: 0;
+  opacity: 0;
 }
 h2.landing-info-h2 {
   color: #c481ff;
@@ -229,6 +229,7 @@ h2.landing-info-h2 {
 .landing-h2-2 {
   position: absolute;
   top: 0;
+  opacity: 0;
 }
 .landing-info-h2::after {
   content: "";
@@ -250,45 +251,47 @@ h2.landing-info-h2 {
   }
   .character-model {
     z-index: 0;
+    height: 70vh;
   }
   .landing-info h3 {
-    font-size: 18px;
+    font-size: 16px;
   }
   .landing-intro h2 {
-    font-size: 18px;
+    font-size: 16px;
   }
   .landing-intro h1 {
-    font-size: 30px;
-    line-height: 30px;
+    font-size: 26px;
+    line-height: 28px;
   }
   .landing-info h2 {
-    font-size: 35px;
-    line-height: 40px;
+    font-size: 30px;
+    line-height: 34px;
   }
   h2.landing-info-h2 {
-    font-size: 38px;
+    font-size: 34px;
   }
 }
 @media screen and (min-width: 768px) {
   .character-model {
     height: 80vh;
+    bottom: 50px;
   }
   .landing-intro h2 {
-    font-size: 25px;
+    font-size: 22px;
   }
   .landing-intro h1 {
-    font-size: 40px;
-    line-height: 35px;
+    font-size: 36px;
+    line-height: 34px;
   }
   .landing-info h3 {
-    font-size: 25px;
+    font-size: 22px;
   }
   .landing-info h2 {
-    font-size: 45px;
-    line-height: 42px;
+    font-size: 40px;
+    line-height: 40px;
   }
   h2.landing-info-h2 {
-    font-size: 55px;
+    font-size: 48px;
   }
 }
 @media screen and (min-width: 1025px) {
